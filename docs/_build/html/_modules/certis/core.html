@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>certis.core &mdash; certis  documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> certis
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../certis.html">certis package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">certis</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>certis.core</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for certis.core</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">certis.util</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">certis.base</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">certis.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">tqdm</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="MarketInfo"><a class="viewcode-back" href="../../certis.core.html#certis.core.MarketInfo">[docs]</a><span class="k">class</span> <span class="nc">MarketInfo</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    takes &amp; contains all these market information we need</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">maker_fee</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">taker_fee</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">slippage</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">tick_size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">minimum_order_size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        initializes MarketInfo class, takes all these market information we need</span>
+
+<span class="sd">        :param maker_fee:</span>
+<span class="sd">        maker fee, fee for market orders. 1% = 0.01</span>
+<span class="sd">        :param taker_fee:</span>
+<span class="sd">        taker fee, fee for limit orders. 1% = 0.01</span>
+<span class="sd">        :param slippage:</span>
+<span class="sd">        slippage for market orders. 1% = 0.01</span>
+<span class="sd">        :param tick_size:</span>
+<span class="sd">        tick size for this data. in other words, minimum change unit.</span>
+<span class="sd">        like (123.123, 12.124, 12.122 ... ), tick size is 0.001</span>
+<span class="sd">        :param minimum_order_size:</span>
+<span class="sd">        minimum order size for this data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_maker_fee</span> <span class="o">=</span> <span class="n">maker_fee</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_taker_fee</span> <span class="o">=</span> <span class="n">taker_fee</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_slippage</span> <span class="o">=</span> <span class="n">slippage</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tick_size</span> <span class="o">=</span> <span class="n">tick_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_minimum_order_size</span> <span class="o">=</span> <span class="n">minimum_order_size</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">maker_fee</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: maker fee, fee for market orders. 1% = 0.01</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maker_fee</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">taker_fee</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: taker fee, fee for limit orders. 1% = 0.01</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_taker_fee</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">slippage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        slippage for market orders. 1% = 0.01</span>
+
+<span class="sd">        :return: self._slippage</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slippage</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tick_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        tick size for this data.</span>
+<span class="sd">        in other words, minimum change unit.</span>
+<span class="sd">        like (123.123, 12.124, 12.122 ... ), tick size is 0.001</span>
+
+<span class="sd">        :return: self._tick_size</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick_size</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">minimum_order_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        minimum order size for this data.</span>
+
+<span class="sd">        :return: self._minimum_order_size</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_minimum_order_size</span>
+
+<div class="viewcode-block" id="MarketInfo.trim_order_size"><a class="viewcode-back" href="../../certis.core.html#certis.core.MarketInfo.trim_order_size">[docs]</a>    <span class="k">def</span> <span class="nf">trim_order_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        trims order size by doing</span>
+<span class="sd">        (size // minimum order size) * minimum order size</span>
+
+<span class="sd">        :param size:  order&#39;s quantity</span>
+<span class="sd">        :return: order size, trimmed by minimum order size</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">size</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">_minimum_order_size</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_minimum_order_size</span></div>
+
+<div class="viewcode-block" id="MarketInfo.trim_order_price"><a class="viewcode-back" href="../../certis.core.html#certis.core.MarketInfo.trim_order_price">[docs]</a>    <span class="k">def</span> <span class="nf">trim_order_price</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">price</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        trims order price by doing</span>
+<span class="sd">        (price // tick size) * tick size</span>
+
+<span class="sd">        :param price: ordered price</span>
+<span class="sd">        :return: trimmed order price</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">price</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick_size</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick_size</span>
+            <span class="k">if</span> <span class="n">price</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="MarketInfo.apply_slippage"><a class="viewcode-back" href="../../certis.core.html#certis.core.MarketInfo.apply_slippage">[docs]</a>    <span class="k">def</span> <span class="nf">apply_slippage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">price</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">side</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        applies slippage for given price and side</span>
+<span class="sd">        for side: long -&gt; higher price</span>
+<span class="sd">        for side: short -&gt; lower price</span>
+
+<span class="sd">        :param price: order price</span>
+<span class="sd">        :param side: order side</span>
+<span class="sd">        :return: slippage-applied order price</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">trim_order_price</span><span class="p">(</span><span class="n">price</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">side</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slippage</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">price</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Order"><a class="viewcode-back" href="../../certis.core.html#certis.core.Order">[docs]</a><span class="k">class</span> <span class="nc">Order</span><span class="p">(</span><span class="n">Action</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Order object in Certis</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">order_side</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">order_quantity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">order_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">order_price</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">reduce_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Order</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="n">generate_random_string</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">=</span> <span class="n">order_side</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_quantity</span> <span class="o">=</span> <span class="n">order_quantity</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="n">order_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">=</span> <span class="n">order_price</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reduce_only</span> <span class="o">=</span> <span class="n">reduce_only</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">MARKET</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="n">OrderType</span><span class="o">.</span><span class="n">STOP_LOSS_MARKET</span><span class="p">,</span>
+                <span class="n">OrderType</span><span class="o">.</span><span class="n">TAKE_PROFIT_MARKET</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reduce_only</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_validity</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__dict__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        converts order object as dict</span>
+<span class="sd">        for logging</span>
+
+<span class="sd">        :return: order object as dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span>
+            <span class="s2">&quot;side&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_side</span><span class="p">,</span>
+            <span class="s2">&quot;quantity&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantity</span><span class="p">,</span>
+            <span class="s2">&quot;reduce_only&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reduce_only</span><span class="p">),</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="p">,</span>
+            <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_price</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        converts order object to string</span>
+<span class="sd">        for logging</span>
+
+<span class="sd">        :return: order object as string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        Order:</span>
+<span class="s2">            id : </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            side : </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_side</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            quantity : </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_quantity</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            reduce_only : </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_reduce_only</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            type : </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            price : </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_price</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">            &quot;&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        order&#39;s id</span>
+
+<span class="sd">        :return: self._id</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">quantity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        order&#39;s quantity</span>
+
+<span class="sd">        :return: self._quantity</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantity</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">side</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        order side defined in certis.core.OrderSide</span>
+<span class="sd">        required in every orders except for STOP_LOSS_MARKET &amp; TAKE_PROFIT_MARKET orders</span>
+
+<span class="sd">        :return: self._side</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_side</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">price</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        order&#39;s price</span>
+<span class="sd">        required in LIMIT, STOP_MARKET (stop price) orders</span>
+
+<span class="sd">        :return: self._price</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_price</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        order&#39;s type</span>
+<span class="sd">        defined in certis.constants.OrderType</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">reduce_only</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        if order is reduce-only order or not</span>
+
+<span class="sd">        :return: self._reduce_only</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reduce_only</span>
+
+    <span class="k">def</span> <span class="nf">_check_validity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        checks order&#39;s validity</span>
+<span class="sd">        raises ValueError if order is invalid</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_order_side_validity</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_order_type_validity</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_check_order_side_validity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        checks order side validity</span>
+<span class="sd">        order except type=SL/TP should have one side, LONG or SHORT</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="ow">in</span> <span class="p">[</span><span class="n">OrderType</span><span class="o">.</span><span class="n">STOP_LOSS_MARKET</span><span class="p">,</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">TAKE_PROFIT_MARKET</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="ow">in</span> <span class="n">OrderSide</span><span class="o">.</span><span class="n">SIDES</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;got invalid order side: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_side</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_check_order_type_validity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        checks order type validity</span>
+<span class="sd">        order type should be in OrderType.ORDERS</span>
+<span class="sd">        order except type=SL/TP should have one side, LONG or SHORT</span>
+<span class="sd">        non-market orders should have order price</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="ow">in</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">ORDERS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Got Invalid Order: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="ow">in</span> <span class="p">[</span><span class="n">OrderType</span><span class="o">.</span><span class="n">STOP_LOSS_MARKET</span><span class="p">,</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">TAKE_PROFIT_MARKET</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">side</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;quantity and side is nesscery except TP/SL Orders&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_type</span>
+                <span class="ow">in</span> <span class="p">[</span>
+                    <span class="n">OrderType</span><span class="o">.</span><span class="n">LIMIT</span><span class="p">,</span>
+                    <span class="n">OrderType</span><span class="o">.</span><span class="n">STOP_MARKET</span><span class="p">,</span>
+                    <span class="n">OrderType</span><span class="o">.</span><span class="n">STOP_LOSS_MARKET</span><span class="p">,</span>
+                    <span class="n">OrderType</span><span class="o">.</span><span class="n">TAKE_PROFIT_MARKET</span><span class="p">,</span>
+                <span class="p">]</span>
+        <span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;When Comes to non-Market Orders (in this case, </span><span class="si">{}</span><span class="s2">), you have to set order_price&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_type</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+<div class="viewcode-block" id="Order.check_order_price_validity"><a class="viewcode-back" href="../../certis.core.html#certis.core.Order.check_order_price_validity">[docs]</a>    <span class="k">def</span> <span class="nf">check_order_price_validity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">market_price</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        checks order price&#39;s validity</span>
+<span class="sd">        for certain cases that could raise &quot;Order Could Execute Immediately&quot; Error in live trading.</span>
+
+<span class="sd">        :param market_price: market price (newest close price in this case)</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">LIMIT</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">&gt;</span> <span class="n">market_price</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">==</span> <span class="n">OrderSide</span><span class="o">.</span><span class="n">LONG</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;LIMIT ORDER ERROR&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">&lt;</span> <span class="n">market_price</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">==</span> <span class="n">OrderSide</span><span class="o">.</span><span class="n">SHORT</span>
+            <span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;LIMIT ORDER ERROR: SIDE=SHORT BUT PRICE &lt; MARKET_PRICE&quot;</span>
+                <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">STOP_MARKET</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">&lt;</span> <span class="n">market_price</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">==</span> <span class="n">OrderSide</span><span class="o">.</span><span class="n">LONG</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;STOP_MARKET ORDER ERROR: SIDE=LONG BUT PRICE &lt; MARKET_PRICE&quot;</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">&gt;</span> <span class="n">market_price</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">==</span> <span class="n">OrderSide</span><span class="o">.</span><span class="n">SHORT</span>
+            <span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;STOP_MARKET ORDER ERROR: SIDE=SHORT BUT PRICE &gt; MARKET_PRICE&quot;</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">STOP_LOSS_MARKET</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">&gt;</span> <span class="n">market_price</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">==</span> <span class="n">OrderSide</span><span class="o">.</span><span class="n">LONG</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;STOP_LOSS_MARKET ORDER ERROR: SIDE=LONG BUT PRICE &gt; MARKET_PRICE&quot;</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">&lt;</span> <span class="n">market_price</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">==</span> <span class="n">OrderSide</span><span class="o">.</span><span class="n">SHORT</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;STOP_LOSS_MARKET ORDER ERROR: SIDE=SHORT BUT PRICE &lt; MARKET_PRICE&quot;</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">TAKE_PROFIT_MARKET</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">&lt;</span> <span class="n">market_price</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">==</span> <span class="n">OrderSide</span><span class="o">.</span><span class="n">LONG</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;TAKE_PROFIT_MARKET ORDER ERROR: SIDE=LONG BUT PRICE &gt; MARKET_PRICE&quot;</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">&gt;</span> <span class="n">market_price</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">==</span> <span class="n">OrderSide</span><span class="o">.</span><span class="n">SHORT</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;TAKE_PROFIT_MARKET ORDER ERROR: SIDE=SHORT BUT PRICE &lt; MARKET_PRICE&quot;</span>
+                <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Order.trim"><a class="viewcode-back" href="../../certis.core.html#certis.core.Order.trim">[docs]</a>    <span class="k">def</span> <span class="nf">trim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">market_info</span><span class="p">:</span> <span class="n">MarketInfo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Action</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        trims order itself</span>
+
+<span class="sd">        :param market_info: market info Object for this backtest</span>
+<span class="sd">        :return: self</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_price</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_quantity</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">market_info</span><span class="o">.</span><span class="n">trim_order_price</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_price</span><span class="p">),</span>
+            <span class="n">market_info</span><span class="o">.</span><span class="n">trim_order_size</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_quantity</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Order.is_fillable_at"><a class="viewcode-back" href="../../certis.core.html#certis.core.Order.is_fillable_at">[docs]</a>    <span class="k">def</span> <span class="nf">is_fillable_at</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">account_info</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+            <span class="n">market_info</span><span class="p">:</span> <span class="n">MarketInfo</span><span class="p">,</span>
+            <span class="n">open_price</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">high_price</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">low_price</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">MARKET</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">=</span> <span class="n">market_info</span><span class="o">.</span><span class="n">apply_slippage</span><span class="p">(</span><span class="n">open_price</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_side</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">LIMIT</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">==</span> <span class="n">OrderSide</span><span class="o">.</span><span class="n">SHORT</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">&lt;</span> <span class="n">high_price</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">&gt;</span> <span class="n">low_price</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">STOP_MARKET</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">low_price</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_price</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">&lt;</span> <span class="n">high_price</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">=</span> <span class="n">market_info</span><span class="o">.</span><span class="n">apply_slippage</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_price</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_side</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">STOP_LOSS_MARKET</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">account_info</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;side&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">OrderSide</span><span class="o">.</span><span class="n">LONG</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">&gt;</span> <span class="n">low_price</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_quantity</span> <span class="o">=</span> <span class="n">account_info</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">=</span> <span class="o">-</span><span class="n">account_info</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;side&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">=</span> <span class="n">market_info</span><span class="o">.</span><span class="n">apply_slippage</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_price</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_side</span>
+                    <span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="n">account_info</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;side&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">OrderSide</span><span class="o">.</span><span class="n">SHORT</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">&lt;</span> <span class="n">high_price</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_quantity</span> <span class="o">=</span> <span class="n">account_info</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">=</span> <span class="o">-</span><span class="n">account_info</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;side&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">=</span> <span class="n">market_info</span><span class="o">.</span><span class="n">apply_slippage</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_price</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_side</span>
+                    <span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">TAKE_PROFIT_MARKET</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">account_info</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;side&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">OrderSide</span><span class="o">.</span><span class="n">LONG</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">&lt;</span> <span class="n">high_price</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">=</span> <span class="n">market_info</span><span class="o">.</span><span class="n">apply_slippage</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_price</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_side</span>
+                    <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_quantity</span> <span class="o">=</span> <span class="n">account_info</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">=</span> <span class="o">-</span><span class="n">account_info</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;side&quot;</span><span class="p">]</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="n">account_info</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;side&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">OrderSide</span><span class="o">.</span><span class="n">SHORT</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_price</span> <span class="o">&gt;</span> <span class="n">low_price</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_quantity</span> <span class="o">=</span> <span class="n">account_info</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">=</span> <span class="o">-</span><span class="n">account_info</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;side&quot;</span><span class="p">]</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid Order Type: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Order.set_id"><a class="viewcode-back" href="../../certis.core.html#certis.core.Order.set_id">[docs]</a>    <span class="k">def</span> <span class="nf">set_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="nb">id</span></div></div>
+
+
+<div class="viewcode-block" id="OrderCancellation"><a class="viewcode-back" href="../../certis.core.html#certis.core.OrderCancellation">[docs]</a><span class="k">class</span> <span class="nc">OrderCancellation</span><span class="p">(</span><span class="n">Action</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    order cancellation object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">OrderCancellation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="nb">id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        id for order to cancel</span>
+<span class="sd">        if id == &quot;all&quot;: cancels all order</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :return: order cancellation object as string</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;OrderCancellation(id=</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Position"><a class="viewcode-back" href="../../certis.core.html#certis.core.Position">[docs]</a><span class="k">class</span> <span class="nc">Position</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initialize</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        initializes position</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_size</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_avg_price</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unrealized_pnl</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        position as dict object</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_size</span><span class="p">,</span>
+            <span class="s2">&quot;side&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_side</span><span class="p">,</span>
+            <span class="s2">&quot;avg_price&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_avg_price</span><span class="p">,</span>
+            <span class="s2">&quot;unrealized_pnl&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unrealized_pnl</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">avg_price</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        average entry price for this position</span>
+
+<span class="sd">        :return: self._avg_price</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_avg_price</span>
+
+<div class="viewcode-block" id="Position.update_unrealized_pnl"><a class="viewcode-back" href="../../certis.core.html#certis.core.Position.update_unrealized_pnl">[docs]</a>    <span class="k">def</span> <span class="nf">update_unrealized_pnl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">price</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        updates unrealized pnl</span>
+
+<span class="sd">        :param price: current price</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_unrealized_pnl</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="p">(</span><span class="n">price</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">avg_price</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_size</span>
+        <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_initialize_if_invalid_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">market_info</span><span class="p">:</span> <span class="n">MarketInfo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        initializes if invalid size</span>
+<span class="sd">        invalid size: size &lt; minimum order size</span>
+<span class="sd">        this is often caused because of the floating point bug</span>
+<span class="sd">        this can be critical for backtesting</span>
+<span class="sd">        so we take this as an exception</span>
+
+<span class="sd">        :param market_info: MarketInfo object</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_size</span> <span class="o">&lt;</span> <span class="n">market_info</span><span class="o">.</span><span class="n">minimum_order_size</span><span class="p">:</span>
+            <span class="c1"># 부동소수점 버그 처리</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_initialize</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Position.update"><a class="viewcode-back" href="../../certis.core.html#certis.core.Position.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">price</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">side</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">market_info</span><span class="p">:</span> <span class="n">MarketInfo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        updates position with new transaction</span>
+
+<span class="sd">        :param price: price of transaction</span>
+<span class="sd">        :param size: quantity of transaction</span>
+<span class="sd">        :param side: side of transaction</span>
+<span class="sd">        :param market_info: MarketInfo object</span>
+<span class="sd">        :return: realized profit and loss (p&amp;L)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">realized_pnl</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">==</span> <span class="n">side</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_avg_price</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span> <span class="o">*</span> <span class="n">price</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_size</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_avg_price</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+                    <span class="n">size</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_size</span>
+            <span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_size</span> <span class="o">&lt;=</span> <span class="n">size</span><span class="p">:</span>
+                <span class="n">realized_pnl</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="p">(</span><span class="n">price</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_avg_price</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_size</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">realized_pnl</span> <span class="o">=</span> <span class="p">(</span><span class="n">price</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_avg_price</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">*</span> <span class="n">size</span>
+
+        <span class="n">new_position</span> <span class="o">=</span> <span class="n">size</span> <span class="o">*</span> <span class="n">side</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_size</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_side</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_side</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">new_position</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">new_position</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_side</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_avg_price</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_if_invalid_size</span><span class="p">(</span><span class="n">market_info</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">realized_pnl</span></div></div>
+
+
+<div class="viewcode-block" id="Account"><a class="viewcode-back" href="../../certis.core.html#certis.core.Account">[docs]</a><span class="k">class</span> <span class="nc">Account</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Certis Account Object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">margin</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">market_info</span><span class="p">:</span> <span class="n">MarketInfo</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_margin</span> <span class="o">=</span> <span class="n">margin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_portfolio_value</span> <span class="o">=</span> <span class="n">margin</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">=</span> <span class="n">Position</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_market_info</span><span class="p">:</span> <span class="n">MarketInfo</span> <span class="o">=</span> <span class="n">market_info</span>
+
+<div class="viewcode-block" id="Account.update_portfolio_value"><a class="viewcode-back" href="../../certis.core.html#certis.core.Account.update_portfolio_value">[docs]</a>    <span class="k">def</span> <span class="nf">update_portfolio_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">price</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        updates portfolio value</span>
+<span class="sd">        updates unrealized pnl</span>
+
+<span class="sd">        :param price: current price</span>
+<span class="sd">        :return: self</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="o">.</span><span class="n">update_unrealized_pnl</span><span class="p">(</span><span class="n">price</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_portfolio_value</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;unrealized_pnl&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_margin</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Account.update_position"><a class="viewcode-back" href="../../certis.core.html#certis.core.Account.update_position">[docs]</a>    <span class="k">def</span> <span class="nf">update_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">price</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">side</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        updates position with new transaction</span>
+
+<span class="sd">        :param price: price of transaction</span>
+<span class="sd">        :param size: quantity of transaction</span>
+<span class="sd">        :param side: side of transaction</span>
+<span class="sd">        :param market_info: MarketInfo object</span>
+<span class="sd">        :return: realized profit and loss (p&amp;L)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">price</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">side</span><span class="p">,</span> <span class="n">market_info</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_market_info</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        gives position info as dictionary</span>
+
+<span class="sd">        :return: position info as dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">position_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="o">.</span><span class="n">info</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;margin&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_margin</span><span class="p">,</span>
+            <span class="s2">&quot;portfolio_value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_portfolio_value</span><span class="p">,</span>
+            <span class="s2">&quot;position&quot;</span><span class="p">:</span> <span class="n">position_info</span><span class="p">,</span>
+            <span class="s2">&quot;has_position&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">position_info</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_market_info</span><span class="o">.</span><span class="n">minimum_order_size</span><span class="p">),</span>
+        <span class="p">}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">margin</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        current margin left</span>
+
+<span class="sd">        :return: self._margin</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_margin</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">position</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Position</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        current position object</span>
+
+<span class="sd">        :return: self._position</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position</span>
+
+<div class="viewcode-block" id="Account.deposit"><a class="viewcode-back" href="../../certis.core.html#certis.core.Account.deposit">[docs]</a>    <span class="k">def</span> <span class="nf">deposit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_margin</span> <span class="o">+=</span> <span class="n">size</span>
+        <span class="k">return</span> <span class="bp">self</span></div></div>
+
+
+<div class="viewcode-block" id="Broker"><a class="viewcode-back" href="../../certis.core.html#certis.core.Broker">[docs]</a><span class="k">class</span> <span class="nc">Broker</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Virtual Broker object for Certis</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">market_info</span><span class="p">:</span> <span class="n">MarketInfo</span><span class="p">,</span> <span class="n">initial_margin</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_account</span><span class="p">:</span> <span class="n">Account</span> <span class="o">=</span> <span class="n">Account</span><span class="p">(</span><span class="n">initial_margin</span><span class="p">,</span> <span class="n">market_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_market_info</span><span class="p">:</span> <span class="n">MarketInfo</span> <span class="o">=</span> <span class="n">market_info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_order_queue</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Order</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">account_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        account information</span>
+
+<span class="sd">        :return: self._account.info</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_account</span><span class="o">.</span><span class="n">info</span>
+
+<div class="viewcode-block" id="Broker.apply_actions"><a class="viewcode-back" href="../../certis.core.html#certis.core.Broker.apply_actions">[docs]</a>    <span class="k">def</span> <span class="nf">apply_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">actions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Action</span><span class="p">],</span> <span class="n">price</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        applies actions,</span>
+<span class="sd">        which is List of Order / OrderCancellation Objects</span>
+
+<span class="sd">        :param actions: list of actions (Order / OrderCancellation Objects)</span>
+<span class="sd">        :param price: current price</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">Order</span><span class="p">):</span>
+                <span class="n">action</span><span class="o">.</span><span class="n">check_order_price_validity</span><span class="p">(</span><span class="n">price</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_place_order</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">OrderCancellation</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cancel_order</span><span class="p">(</span><span class="n">action</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_cancel_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">OrderCancellation</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        executes OrderCancellation Object</span>
+<span class="sd">        if OrderCancellation.id is all: cancels all orders</span>
+
+<span class="sd">        :param action: OrderCancellation Object</span>
+<span class="sd">        :return: self</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_order_queue</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">return</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_order_queue</span><span class="p">[</span><span class="n">action</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">_place_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="p">:</span> <span class="n">Order</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        places order in order_queue</span>
+
+<span class="sd">        :param order: Order object</span>
+<span class="sd">        :return: self</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">order</span><span class="o">.</span><span class="n">trim</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_market_info</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">order</span><span class="o">.</span><span class="n">quantity</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_order_queue</span><span class="p">[</span><span class="n">order</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">order</span>
+
+        <span class="k">return</span> <span class="bp">self</span>
+
+<div class="viewcode-block" id="Broker.fill_pending_orders"><a class="viewcode-back" href="../../certis.core.html#certis.core.Broker.fill_pending_orders">[docs]</a>    <span class="k">def</span> <span class="nf">fill_pending_orders</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">open_price</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">high_price</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">low_price</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        executes orders in order queue</span>
+
+<span class="sd">        :param timestamp: current timestamp</span>
+<span class="sd">        :param open_price: current open price</span>
+<span class="sd">        :param high_price: current high price</span>
+<span class="sd">        :param low_price: current low price</span>
+<span class="sd">        :return: self</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">transactions</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">order_id</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_order_queue</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="n">order</span><span class="p">:</span> <span class="n">Order</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_order_queue</span><span class="p">[</span><span class="n">order_id</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">order</span><span class="o">.</span><span class="n">_reduce_only</span> <span class="o">&amp;</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_account</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;has_position&quot;</span><span class="p">])</span>
+                    <span class="o">|</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_account</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;side&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">order</span><span class="o">.</span><span class="n">_side</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_order_queue</span><span class="p">[</span><span class="n">order</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+                <span class="k">continue</span>
+
+            <span class="k">elif</span> <span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">quantity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">reduce_only</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">order</span><span class="o">.</span><span class="n">quantity</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_account</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">]:</span>
+                    <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_order_queue</span><span class="p">[</span><span class="n">order</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+                    <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">order</span><span class="o">.</span><span class="n">is_fillable_at</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_account</span><span class="o">.</span><span class="n">info</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_market_info</span><span class="p">,</span>
+                    <span class="n">open_price</span><span class="p">,</span>
+                    <span class="n">high_price</span><span class="p">,</span>
+                    <span class="n">low_price</span><span class="p">,</span>
+            <span class="p">):</span>
+                <span class="n">realized_pnl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_account</span><span class="o">.</span><span class="n">update_position</span><span class="p">(</span>
+                    <span class="n">order</span><span class="o">.</span><span class="n">price</span><span class="p">,</span> <span class="n">order</span><span class="o">.</span><span class="n">quantity</span><span class="p">,</span> <span class="n">order</span><span class="o">.</span><span class="n">side</span>
+                <span class="p">)</span>
+
+                <span class="n">order_amount</span> <span class="o">=</span> <span class="n">order</span><span class="o">.</span><span class="n">quantity</span> <span class="o">*</span> <span class="n">order</span><span class="o">.</span><span class="n">price</span>
+
+                <span class="n">fee</span> <span class="o">=</span> <span class="n">order_amount</span> <span class="o">*</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_market_info</span><span class="o">.</span><span class="n">maker_fee</span>
+                    <span class="k">if</span> <span class="n">order</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">OrderType</span><span class="o">.</span><span class="n">LIMIT</span>
+                    <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_market_info</span><span class="o">.</span><span class="n">taker_fee</span>
+                <span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_account</span><span class="o">.</span><span class="n">deposit</span><span class="p">(</span><span class="n">realized_pnl</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_account</span><span class="o">.</span><span class="n">deposit</span><span class="p">(</span><span class="o">-</span><span class="n">fee</span><span class="p">)</span>
+
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_order_queue</span><span class="p">[</span><span class="n">order_id</span><span class="p">]</span>
+
+                <span class="n">transaction</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">timestamp</span><span class="p">,</span>
+                    <span class="s2">&quot;realized&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;pnl&quot;</span><span class="p">:</span> <span class="n">realized_pnl</span><span class="p">,</span> <span class="s2">&quot;fee&quot;</span><span class="p">:</span> <span class="n">fee</span><span class="p">,</span> <span class="p">},</span>
+                    <span class="s2">&quot;order&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">order</span><span class="o">.</span><span class="n">price</span><span class="p">,</span>
+                        <span class="s2">&quot;quantity&quot;</span><span class="p">:</span> <span class="n">order</span><span class="o">.</span><span class="n">quantity</span><span class="p">,</span>
+                        <span class="s2">&quot;side&quot;</span><span class="p">:</span> <span class="n">order</span><span class="o">.</span><span class="n">side</span><span class="p">,</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">order</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                    <span class="p">},</span>
+                <span class="p">}</span>
+
+                <span class="n">transactions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">transaction</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">transactions</span></div></div>
+
+
+<div class="viewcode-block" id="Engine"><a class="viewcode-back" href="../../certis.core.html#certis.core.Engine">[docs]</a><span class="k">class</span> <span class="nc">Engine</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Engine Object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">initial_margin</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">market_info</span><span class="p">:</span> <span class="n">MarketInfo</span><span class="p">,</span>
+            <span class="n">strategy_cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
+            <span class="n">strategy_config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_broker</span><span class="p">:</span> <span class="n">Broker</span> <span class="o">=</span> <span class="n">Broker</span><span class="p">(</span><span class="n">market_info</span><span class="p">,</span> <span class="n">initial_margin</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_strategy</span><span class="p">:</span> <span class="n">Strategy</span> <span class="o">=</span> <span class="n">strategy_cls</span><span class="p">(</span><span class="n">strategy_config</span><span class="p">)</span>
+
+        <span class="n">indicator_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strategy</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_dict_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span>
+            <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">dataframe_as_list_of_dict</span><span class="p">(</span><span class="n">indicator_df</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span> <span class="o">=</span> <span class="n">Logger</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span>
+
+<div class="viewcode-block" id="Engine.run"><a class="viewcode-back" href="../../certis.core.html#certis.core.Engine.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use_tqdm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_margin_call</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        runs backtest</span>
+
+<span class="sd">        :param use_tqdm: use tqdm progressbar or not</span>
+<span class="sd">        :return: Logger object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_dict_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">use_tqdm</span><span class="p">:</span>
+            <span class="n">iterator</span> <span class="o">=</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_dict_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">next_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_dict_list</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_broker</span><span class="o">.</span><span class="n">_account</span><span class="o">.</span><span class="n">update_portfolio_value</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;close&quot;</span><span class="p">])</span>
+
+            <span class="n">account_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_broker</span><span class="o">.</span><span class="n">account_info</span>
+
+            <span class="n">unfilled_orders</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_broker</span><span class="o">.</span><span class="n">_order_queue</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">}</span>
+
+            <span class="n">state_dict</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span>
+                <span class="s2">&quot;account_info&quot;</span><span class="p">:</span> <span class="n">account_info</span><span class="p">,</span>
+                <span class="s2">&quot;unfilled_orders&quot;</span><span class="p">:</span> <span class="n">unfilled_orders</span><span class="p">,</span>
+            <span class="p">}</span>
+
+            <span class="n">actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strategy</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">state_dict</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_broker</span><span class="o">.</span><span class="n">apply_actions</span><span class="p">(</span>
+                <span class="n">actions</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;close&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+
+            <span class="n">transactions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_broker</span><span class="o">.</span><span class="n">fill_pending_orders</span><span class="p">(</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">next_data</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]),</span>
+                <span class="n">next_data</span><span class="p">[</span><span class="s2">&quot;open&quot;</span><span class="p">],</span>
+                <span class="n">next_data</span><span class="p">[</span><span class="s2">&quot;high&quot;</span><span class="p">],</span>
+                <span class="n">next_data</span><span class="p">[</span><span class="s2">&quot;low&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
+
+            <span class="n">account_info</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_data</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">add_transaction</span><span class="p">(</span><span class="n">transactions</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">add_account_info</span><span class="p">(</span><span class="n">account_info</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">add_unfilled_orders</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_broker</span><span class="o">.</span><span class="n">_order_queue</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">use_margin_call</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">account_info</span><span class="p">[</span><span class="s2">&quot;portfolio_value&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MARGIN CALL OCCURED, EXITING&quot;</span><span class="p">)</span>
+                <span class="k">break</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Author.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

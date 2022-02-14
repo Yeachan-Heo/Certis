@@ -45,7 +45,7 @@
 <li class="toctree-l3"><a class="reference internal" href="certis.util.html">certis.util module</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="certis.html#module-contents">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="certis.html#module-certis">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -75,8 +75,89 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="certis-constants-module">
-<h1>certis.constants module<a class="headerlink" href="#certis-constants-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-certis.constants">
+<span id="certis-constants-module"></span><h1>certis.constants module<a class="headerlink" href="#module-certis.constants" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="certis.constants.OrderSide">
+<em class="property">class </em><code class="sig-prename descclassname">certis.constants.</code><code class="sig-name descname">OrderSide</code><a class="reference internal" href="_modules/certis/constants.html#OrderSide"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.constants.OrderSide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>OrderSide Object</p>
+<p>LONG: betting for upside
+SHORT: betting for downside</p>
+<dl class="py attribute">
+<dt id="certis.constants.OrderSide.LONG">
+<code class="sig-name descname">LONG</code><em class="property"> = 1</em><a class="headerlink" href="#certis.constants.OrderSide.LONG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="certis.constants.OrderSide.SHORT">
+<code class="sig-name descname">SHORT</code><em class="property"> = -1</em><a class="headerlink" href="#certis.constants.OrderSide.SHORT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="certis.constants.OrderSide.SIDES">
+<code class="sig-name descname">SIDES</code><em class="property"> = [-1, 1]</em><a class="headerlink" href="#certis.constants.OrderSide.SIDES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="certis.constants.OrderType">
+<em class="property">class </em><code class="sig-prename descclassname">certis.constants.</code><code class="sig-name descname">OrderType</code><a class="reference internal" href="_modules/certis/constants.html#OrderType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.constants.OrderType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>OrderType Object. Supported types are</p>
+<p>MARKET,
+LIMIT,
+STOP_MARKET,
+STOP_LOSS_MARKET,
+TAKE_PROFIT_MARKET</p>
+<dl class="py attribute">
+<dt id="certis.constants.OrderType.LIMIT">
+<code class="sig-name descname">LIMIT</code><em class="property"> = 'LIMIT'</em><a class="headerlink" href="#certis.constants.OrderType.LIMIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="certis.constants.OrderType.LIMIT_ORDERS">
+<code class="sig-name descname">LIMIT_ORDERS</code><em class="property"> = ['LIMIT']</em><a class="headerlink" href="#certis.constants.OrderType.LIMIT_ORDERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="certis.constants.OrderType.MARKET">
+<code class="sig-name descname">MARKET</code><em class="property"> = 'MARKET'</em><a class="headerlink" href="#certis.constants.OrderType.MARKET" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="certis.constants.OrderType.MARKET_ORDERS">
+<code class="sig-name descname">MARKET_ORDERS</code><em class="property"> = ['MARKET', 'STOP_MARKET']</em><a class="headerlink" href="#certis.constants.OrderType.MARKET_ORDERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="certis.constants.OrderType.ORDERS">
+<code class="sig-name descname">ORDERS</code><em class="property"> = ['MARKET', 'LIMIT', 'STOP_MARKET', 'STOP_LOSS_MARKET', 'TAKE_PROFIT_MARKET']</em><a class="headerlink" href="#certis.constants.OrderType.ORDERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="certis.constants.OrderType.STOP_LOSS_MARKET">
+<code class="sig-name descname">STOP_LOSS_MARKET</code><em class="property"> = 'STOP_LOSS_MARKET'</em><a class="headerlink" href="#certis.constants.OrderType.STOP_LOSS_MARKET" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="certis.constants.OrderType.STOP_MARKET">
+<code class="sig-name descname">STOP_MARKET</code><em class="property"> = 'STOP_MARKET'</em><a class="headerlink" href="#certis.constants.OrderType.STOP_MARKET" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="certis.constants.OrderType.STOP_ORDERS">
+<code class="sig-name descname">STOP_ORDERS</code><em class="property"> = ['STOP_MARKET']</em><a class="headerlink" href="#certis.constants.OrderType.STOP_ORDERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="certis.constants.OrderType.TAKE_PROFIT_MARKET">
+<code class="sig-name descname">TAKE_PROFIT_MARKET</code><em class="property"> = 'TAKE_PROFIT_MARKET'</em><a class="headerlink" href="#certis.constants.OrderType.TAKE_PROFIT_MARKET" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 
 
