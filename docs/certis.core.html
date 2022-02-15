@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>certis.core module &mdash; certis  documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="certis.util module" href="certis.util.html" />
+    <link rel="prev" title="certis.constants module" href="certis.constants.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> certis
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="certis.html">certis package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="certis.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="certis.base.html">certis.base module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="certis.constants.html">certis.constants module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">certis.core module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="certis.util.html">certis.util module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="certis.html#module-certis">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">certis</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="certis.html">certis package</a> &raquo;</li>
+      <li>certis.core module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/certis.core.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="module-certis.core">
+<span id="certis-core-module"></span><h1>certis.core module<a class="headerlink" href="#module-certis.core" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="certis.core.Account">
+<em class="property">class </em><code class="sig-prename descclassname">certis.core.</code><code class="sig-name descname">Account</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">margin</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">market_info</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#certis.core.MarketInfo" title="certis.core.MarketInfo">certis.core.MarketInfo</a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/certis/core.html#Account"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.Account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Certis Account Object</p>
+<dl class="py method">
+<dt id="certis.core.Account.deposit">
+<code class="sig-name descname">deposit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; object<a class="reference internal" href="_modules/certis/core.html#Account.deposit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.Account.deposit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Account.info">
+<em class="property">property </em><code class="sig-name descname">info</code><a class="headerlink" href="#certis.core.Account.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>gives position info as dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>position info as dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Account.margin">
+<em class="property">property </em><code class="sig-name descname">margin</code><a class="headerlink" href="#certis.core.Account.margin" title="Permalink to this definition">¶</a></dt>
+<dd><p>current margin left</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>self._margin</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Account.position">
+<em class="property">property </em><code class="sig-name descname">position</code><a class="headerlink" href="#certis.core.Account.position" title="Permalink to this definition">¶</a></dt>
+<dd><p>current position object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>self._position</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Account.update_portfolio_value">
+<code class="sig-name descname">update_portfolio_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">price</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; object<a class="reference internal" href="_modules/certis/core.html#Account.update_portfolio_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.Account.update_portfolio_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>updates portfolio value
+updates unrealized pnl</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>price</strong> – current price</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Account.update_position">
+<code class="sig-name descname">update_position</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">price</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">side</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/certis/core.html#Account.update_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.Account.update_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>updates position with new transaction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>price</strong> – price of transaction</p></li>
+<li><p><strong>size</strong> – quantity of transaction</p></li>
+<li><p><strong>side</strong> – side of transaction</p></li>
+<li><p><strong>market_info</strong> – MarketInfo object</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>realized profit and loss (p&amp;L)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="certis.core.Broker">
+<em class="property">class </em><code class="sig-prename descclassname">certis.core.</code><code class="sig-name descname">Broker</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">market_info</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#certis.core.MarketInfo" title="certis.core.MarketInfo">certis.core.MarketInfo</a></span></em>, <em class="sig-param"><span class="n">initial_margin</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/certis/core.html#Broker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.Broker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Virtual Broker object for Certis</p>
+<dl class="py method">
+<dt id="certis.core.Broker.account_info">
+<em class="property">property </em><code class="sig-name descname">account_info</code><a class="headerlink" href="#certis.core.Broker.account_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>account information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>self._account.info</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Broker.apply_actions">
+<code class="sig-name descname">apply_actions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">actions</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference internal" href="certis.base.html#certis.base.Action" title="certis.base.Action">certis.base.Action</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">price</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/certis/core.html#Broker.apply_actions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.Broker.apply_actions" title="Permalink to this definition">¶</a></dt>
+<dd><p>applies actions,
+which is List of Order / OrderCancellation Objects</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>actions</strong> – list of actions (Order / OrderCancellation Objects)</p></li>
+<li><p><strong>price</strong> – current price</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Broker.fill_pending_orders">
+<code class="sig-name descname">fill_pending_orders</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">timestamp</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">open_price</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">high_price</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">low_price</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; object<a class="reference internal" href="_modules/certis/core.html#Broker.fill_pending_orders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.Broker.fill_pending_orders" title="Permalink to this definition">¶</a></dt>
+<dd><p>executes orders in order queue</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timestamp</strong> – current timestamp</p></li>
+<li><p><strong>open_price</strong> – current open price</p></li>
+<li><p><strong>high_price</strong> – current high price</p></li>
+<li><p><strong>low_price</strong> – current low price</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="certis.core.Engine">
+<em class="property">class </em><code class="sig-prename descclassname">certis.core.</code><code class="sig-name descname">Engine</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em>, <em class="sig-param"><span class="n">initial_margin</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">market_info</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#certis.core.MarketInfo" title="certis.core.MarketInfo">certis.core.MarketInfo</a></span></em>, <em class="sig-param"><span class="n">strategy_cls</span><span class="p">:</span> <span class="n">type</span></em>, <em class="sig-param"><span class="n">strategy_config</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/certis/core.html#Engine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.Engine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Engine Object</p>
+<dl class="py method">
+<dt id="certis.core.Engine.logger">
+<em class="property">property </em><code class="sig-name descname">logger</code><a class="headerlink" href="#certis.core.Engine.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Engine.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">use_tqdm</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">use_margin_call</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/certis/core.html#Engine.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.Engine.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>runs backtest</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>use_tqdm</strong> – use tqdm progressbar or not</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Logger object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="certis.core.MarketInfo">
+<em class="property">class </em><code class="sig-prename descclassname">certis.core.</code><code class="sig-name descname">MarketInfo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">maker_fee</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">taker_fee</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">slippage</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">tick_size</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">minimum_order_size</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/certis/core.html#MarketInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.MarketInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>takes &amp; contains all these market information we need</p>
+<dl class="py method">
+<dt id="certis.core.MarketInfo.apply_slippage">
+<code class="sig-name descname">apply_slippage</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">price</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">side</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="_modules/certis/core.html#MarketInfo.apply_slippage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.MarketInfo.apply_slippage" title="Permalink to this definition">¶</a></dt>
+<dd><p>applies slippage for given price and side
+for side: long -&gt; higher price
+for side: short -&gt; lower price</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>price</strong> – order price</p></li>
+<li><p><strong>side</strong> – order side</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>slippage-applied order price</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.MarketInfo.maker_fee">
+<em class="property">property </em><code class="sig-name descname">maker_fee</code><a class="headerlink" href="#certis.core.MarketInfo.maker_fee" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>maker fee, fee for market orders. 1% = 0.01</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.MarketInfo.minimum_order_size">
+<em class="property">property </em><code class="sig-name descname">minimum_order_size</code><a class="headerlink" href="#certis.core.MarketInfo.minimum_order_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>minimum order size for this data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>self._minimum_order_size</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.MarketInfo.slippage">
+<em class="property">property </em><code class="sig-name descname">slippage</code><a class="headerlink" href="#certis.core.MarketInfo.slippage" title="Permalink to this definition">¶</a></dt>
+<dd><p>slippage for market orders. 1% = 0.01</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>self._slippage</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.MarketInfo.taker_fee">
+<em class="property">property </em><code class="sig-name descname">taker_fee</code><a class="headerlink" href="#certis.core.MarketInfo.taker_fee" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>taker fee, fee for limit orders. 1% = 0.01</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.MarketInfo.tick_size">
+<em class="property">property </em><code class="sig-name descname">tick_size</code><a class="headerlink" href="#certis.core.MarketInfo.tick_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>tick size for this data.
+in other words, minimum change unit.
+like (123.123, 12.124, 12.122 … ), tick size is 0.001</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>self._tick_size</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.MarketInfo.trim_order_price">
+<code class="sig-name descname">trim_order_price</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">price</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="_modules/certis/core.html#MarketInfo.trim_order_price"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.MarketInfo.trim_order_price" title="Permalink to this definition">¶</a></dt>
+<dd><p>trims order price by doing
+(price // tick size) * tick size</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>price</strong> – ordered price</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>trimmed order price</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.MarketInfo.trim_order_size">
+<code class="sig-name descname">trim_order_size</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>float<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>float<span class="p">]</span><a class="reference internal" href="_modules/certis/core.html#MarketInfo.trim_order_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.MarketInfo.trim_order_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>trims order size by doing
+(size // minimum order size) * minimum order size</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>size</strong> – order’s quantity</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>order size, trimmed by minimum order size</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="certis.core.Order">
+<em class="property">class </em><code class="sig-prename descclassname">certis.core.</code><code class="sig-name descname">Order</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">order_side</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">order_quantity</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">order_type</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">order_price</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>numpy.float64<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">reduce_only</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/certis/core.html#Order"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.Order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="certis.base.html#certis.base.Action" title="certis.base.Action"><code class="xref py py-class docutils literal notranslate"><span class="pre">certis.base.Action</span></code></a></p>
+<p>Order object in Certis</p>
+<dl class="py method">
+<dt id="certis.core.Order.check_order_price_validity">
+<code class="sig-name descname">check_order_price_validity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">market_price</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/certis/core.html#Order.check_order_price_validity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.Order.check_order_price_validity" title="Permalink to this definition">¶</a></dt>
+<dd><p>checks order price’s validity
+for certain cases that could raise “Order Could Execute Immediately” Error in live trading.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>market_price</strong> – market price (newest close price in this case)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Order.id">
+<em class="property">property </em><code class="sig-name descname">id</code><a class="headerlink" href="#certis.core.Order.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>order’s id</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>self._id</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Order.is_fillable_at">
+<code class="sig-name descname">is_fillable_at</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">account_info</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">market_info</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#certis.core.MarketInfo" title="certis.core.MarketInfo">certis.core.MarketInfo</a></span></em>, <em class="sig-param"><span class="n">open_price</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">high_price</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">low_price</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/certis/core.html#Order.is_fillable_at"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.Order.is_fillable_at" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Order.price">
+<em class="property">property </em><code class="sig-name descname">price</code><a class="headerlink" href="#certis.core.Order.price" title="Permalink to this definition">¶</a></dt>
+<dd><p>order’s price
+required in LIMIT, STOP_MARKET (stop price) orders</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>self._price</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Order.quantity">
+<em class="property">property </em><code class="sig-name descname">quantity</code><a class="headerlink" href="#certis.core.Order.quantity" title="Permalink to this definition">¶</a></dt>
+<dd><p>order’s quantity</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>self._quantity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Order.reduce_only">
+<em class="property">property </em><code class="sig-name descname">reduce_only</code><a class="headerlink" href="#certis.core.Order.reduce_only" title="Permalink to this definition">¶</a></dt>
+<dd><p>if order is reduce-only order or not</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>self._reduce_only</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Order.set_id">
+<code class="sig-name descname">set_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/certis/core.html#Order.set_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.Order.set_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Order.side">
+<em class="property">property </em><code class="sig-name descname">side</code><a class="headerlink" href="#certis.core.Order.side" title="Permalink to this definition">¶</a></dt>
+<dd><p>order side defined in certis.core.OrderSide
+required in every orders except for STOP_LOSS_MARKET &amp; TAKE_PROFIT_MARKET orders</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>self._side</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Order.trim">
+<code class="sig-name descname">trim</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">market_info</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#certis.core.MarketInfo" title="certis.core.MarketInfo">certis.core.MarketInfo</a></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="certis.base.html#certis.base.Action" title="certis.base.Action">certis.base.Action</a><a class="reference internal" href="_modules/certis/core.html#Order.trim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.Order.trim" title="Permalink to this definition">¶</a></dt>
+<dd><p>trims order itself</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>market_info</strong> – market info Object for this backtest</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Order.type">
+<em class="property">property </em><code class="sig-name descname">type</code><a class="headerlink" href="#certis.core.Order.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>order’s type
+defined in certis.constants.OrderType</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="certis.core.OrderCancellation">
+<em class="property">class </em><code class="sig-prename descclassname">certis.core.</code><code class="sig-name descname">OrderCancellation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/certis/core.html#OrderCancellation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.OrderCancellation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="certis.base.html#certis.base.Action" title="certis.base.Action"><code class="xref py py-class docutils literal notranslate"><span class="pre">certis.base.Action</span></code></a></p>
+<p>order cancellation object</p>
+<dl class="py method">
+<dt id="certis.core.OrderCancellation.id">
+<em class="property">property </em><code class="sig-name descname">id</code><a class="headerlink" href="#certis.core.OrderCancellation.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>id for order to cancel
+if id == “all”: cancels all order</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="certis.core.Position">
+<em class="property">class </em><code class="sig-prename descclassname">certis.core.</code><code class="sig-name descname">Position</code><a class="reference internal" href="_modules/certis/core.html#Position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.Position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="certis.core.Position.avg_price">
+<em class="property">property </em><code class="sig-name descname">avg_price</code><a class="headerlink" href="#certis.core.Position.avg_price" title="Permalink to this definition">¶</a></dt>
+<dd><p>average entry price for this position</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>self._avg_price</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Position.info">
+<em class="property">property </em><code class="sig-name descname">info</code><a class="headerlink" href="#certis.core.Position.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>position as dict object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Position.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">price</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">size</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">side</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">market_info</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#certis.core.MarketInfo" title="certis.core.MarketInfo">certis.core.MarketInfo</a></span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="_modules/certis/core.html#Position.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.Position.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>updates position with new transaction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>price</strong> – price of transaction</p></li>
+<li><p><strong>size</strong> – quantity of transaction</p></li>
+<li><p><strong>side</strong> – side of transaction</p></li>
+<li><p><strong>market_info</strong> – MarketInfo object</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>realized profit and loss (p&amp;L)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.core.Position.update_unrealized_pnl">
+<code class="sig-name descname">update_unrealized_pnl</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">price</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/certis/core.html#Position.update_unrealized_pnl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.core.Position.update_unrealized_pnl" title="Permalink to this definition">¶</a></dt>
+<dd><p>updates unrealized pnl</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>price</strong> – current price</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="certis.constants.html" class="btn btn-neutral float-left" title="certis.constants module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="certis.util.html" class="btn btn-neutral float-right" title="certis.util module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Author.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

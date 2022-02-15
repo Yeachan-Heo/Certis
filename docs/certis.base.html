@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>certis.base module &mdash; certis  documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="certis.constants module" href="certis.constants.html" />
+    <link rel="prev" title="certis package" href="certis.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> certis
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="certis.html">certis package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="certis.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">certis.base module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="certis.constants.html">certis.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="certis.core.html">certis.core module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="certis.util.html">certis.util module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="certis.html#module-certis">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">certis</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="certis.html">certis package</a> &raquo;</li>
+      <li>certis.base module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/certis.base.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="module-certis.base">
+<span id="certis-base-module"></span><h1>certis.base module<a class="headerlink" href="#module-certis.base" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="certis.base.Action">
+<em class="property">class </em><code class="sig-prename descclassname">certis.base.</code><code class="sig-name descname">Action</code><a class="reference internal" href="_modules/certis/base.html#Action"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.base.Action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Abstract class for Order, OrderCancellation</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="certis.base.Logger">
+<em class="property">class </em><code class="sig-prename descclassname">certis.base.</code><code class="sig-name descname">Logger</code><a class="reference internal" href="_modules/certis/base.html#Logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.base.Logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Logger Object</p>
+<dl class="py method">
+<dt id="certis.base.Logger.account_infos">
+<em class="property">property </em><code class="sig-name descname">account_infos</code><a class="headerlink" href="#certis.base.Logger.account_infos" title="Permalink to this definition">¶</a></dt>
+<dd><p>account infos during the backtest.
+recorded interval-by-interval</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>self._account_infos</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.base.Logger.add_account_info">
+<code class="sig-name descname">add_account_info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">account_info</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/certis/base.html#Logger.add_account_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.base.Logger.add_account_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds account info</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>account_info</strong> – account info</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.base.Logger.add_transaction">
+<code class="sig-name descname">add_transaction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">transactions</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/certis/base.html#Logger.add_transaction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.base.Logger.add_transaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds transactions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>transactions</strong> – transactions</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.base.Logger.add_unfilled_orders">
+<code class="sig-name descname">add_unfilled_orders</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">unfilled_orders</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/certis/base.html#Logger.add_unfilled_orders"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.base.Logger.add_unfilled_orders" title="Permalink to this definition">¶</a></dt>
+<dd><p>adds unfilled orders</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>unfilled_orders</strong> – unfilled orders</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.base.Logger.to_json">
+<code class="sig-name descname">to_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target_directory</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/certis/base.html#Logger.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.base.Logger.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>writes logger to json</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>target_directory</strong> – target directory to write</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.base.Logger.transactions">
+<em class="property">property </em><code class="sig-name descname">transactions</code><a class="headerlink" href="#certis.base.Logger.transactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of transactions during the backtest.
+each transaction is generated when order fills</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>self._transactions</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="certis.base.Logger.unfilled_orders">
+<em class="property">property </em><code class="sig-name descname">unfilled_orders</code><a class="headerlink" href="#certis.base.Logger.unfilled_orders" title="Permalink to this definition">¶</a></dt>
+<dd><p>unfilled orders during the backtest.
+recorded interval-by-interval</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>self._unfilled_orders</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="certis.base.Strategy">
+<em class="property">class </em><code class="sig-prename descclassname">certis.base.</code><code class="sig-name descname">Strategy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'CertisStrategy'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/certis/base.html#Strategy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.base.Strategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Abstract method for generating user-defined trading strategies with certis</p>
+<dl class="py method">
+<dt id="certis.base.Strategy.calculate">
+<code class="sig-name descname">calculate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/certis/base.html#Strategy.calculate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.base.Strategy.calculate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="certis.base.Strategy.execute">
+<code class="sig-name descname">execute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state_dict</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span><a class="reference internal" href="#certis.base.Action" title="certis.base.Action">certis.base.Action</a><span class="p">]</span><a class="reference internal" href="_modules/certis/base.html#Strategy.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#certis.base.Strategy.execute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="certis.html" class="btn btn-neutral float-left" title="certis package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="certis.constants.html" class="btn btn-neutral float-right" title="certis.constants module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Author.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
