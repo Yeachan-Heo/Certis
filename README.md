@@ -5,6 +5,7 @@
 # Read The Docs
 - Start by reading a docs of certis or look into examples folder. Thanks!
 - Docs Link: https://certis.readthedocs.io/en/latest/
+- Quickstart: https://github.com/Yeachan-Heo/Certis/blob/main/examples/Quickstart.ipynb
 
 # Community
 - PRs and Issues are welcomed
