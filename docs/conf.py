@@ -11,8 +11,8 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 # import os
-# import sys
-# sys.path.insert(0, '/Users/yeachanheo/Projects/Outlier/certis-core/certis')
+import sys
+sys.path.insert(0, '../../Certis')
 
 
 # -- Project information -----------------------------------------------------
