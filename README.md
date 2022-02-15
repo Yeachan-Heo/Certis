@@ -4,4 +4,8 @@
 
 # Read The Docs
 - Start by reading a docs of certis or look into examples folder. Thanks!
-- Docs Link: 
+- Docs Link: https://certis.readthedocs.io/en/latest/
+
+# Community
+- PRs and Issues are welcomed
+- Contact me anytime with questions.
